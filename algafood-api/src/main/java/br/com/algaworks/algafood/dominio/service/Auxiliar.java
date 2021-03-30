@@ -9,6 +9,8 @@ import br.com.algaworks.algafood.dominio.modelo.Modelo;
 
 @Component
 public class Auxiliar {
+	
+//	Classe que possui a função de isolar códigos repetidos nas Classes dominio.service
 
 	public Modelo consultarPorId(Optional<? extends Modelo> modeloOptional) {
 		if(modeloOptional.isPresent())
