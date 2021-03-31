@@ -17,8 +17,9 @@ public class RestauranteService {
 	@Autowired
 	private Auxiliar auxiliar;
 	
-	public void salvar(Restaurante restaurante) {
-		this.repository.save(restaurante);
+	public Restaurante salvar(Restaurante restaurante, CozinhaService cozinhaService) {
+		cozinhaService.consultarPorId(restaurante.getId());
+		return this.repository.save(restaurante);
 	}
 	
 	public List<Restaurante> consultarTodos() {

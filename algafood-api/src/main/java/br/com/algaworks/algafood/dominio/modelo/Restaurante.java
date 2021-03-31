@@ -31,10 +31,10 @@ public class Restaurante implements Modelo{
 
 	public Restaurante() {}
 
-	public Restaurante(Long id, String nome, BigDecimal taxaFrete) {
-		this.id = id;
+	public Restaurante(String nome, BigDecimal taxaFrete, Cozinha cozinha) {
 		this.nome = nome;
 		this.taxaFrete = taxaFrete;
+		this.cozinha = cozinha;
 	}
 
 	@Override
@@ -60,6 +60,14 @@ public class Restaurante implements Modelo{
 
 	public void setTaxaFrete(BigDecimal taxaFrete) {
 		this.taxaFrete = taxaFrete;
+	}
+	
+	public Cozinha getCozinha() {
+		return cozinha;
+	}
+	
+	public void setCozinha(Cozinha cozinha) {
+		this.cozinha = cozinha;
 	}
 
 	@Override
