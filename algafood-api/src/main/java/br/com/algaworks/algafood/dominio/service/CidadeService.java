@@ -1,8 +1,8 @@
 package br.com.algaworks.algafood.dominio.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +15,33 @@ public class CidadeService {
 	@Autowired
 	private CidadeRepository repository;
 	
-	public void salvar(Cidade cidade) {
-		this.repository.save(cidade);
+	@Autowired
+	private Auxiliar auxiliar;
+	
+	@Autowired
+	private EstadoService estadoService;
+	
+	public Cidade salvar(Cidade cidade) {
+		this.estadoService.consultarPorId(cidade.getEstado().getId());
+		return this.repository.save(cidade);
 	}
 	
 	public List<Cidade> consultarTodos() {
 		return this.repository.findAll();
 	}
 	
-	public Optional<Cidade> consultarPorId(Long id) {
-		return this.repository.findById(id);
+	public Cidade consultarPorId(Long id) {
+		return (Cidade) this.auxiliar.consultarPorId(this.repository.findById(id));
 	}
 	
 	public void deletarPorId(Long id) {
+		this.auxiliar.deletarPorId(this.repository.findById(id));
 		this.repository.deleteById(id);
+	}
+
+	public Cidade atualizar(Long id, Cidade cidade) {
+		Cidade cidadeEntidade = this.consultarPorId(id);
+		BeanUtils.copyProperties(cidade, cidadeEntidade, "id");
+		return cidadeEntidade;
 	}
 }

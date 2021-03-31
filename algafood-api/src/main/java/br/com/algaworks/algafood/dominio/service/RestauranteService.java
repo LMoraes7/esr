@@ -2,6 +2,7 @@ package br.com.algaworks.algafood.dominio.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,13 @@ public class RestauranteService {
 	private RestauranteRepository repository;
 	
 	@Autowired
+	private CozinhaService cozinhaService;
+	
+	@Autowired
 	private Auxiliar auxiliar;
 	
-	public Restaurante salvar(Restaurante restaurante, CozinhaService cozinhaService) {
-		cozinhaService.consultarPorId(restaurante.getId());
+	public Restaurante salvar(Restaurante restaurante) {
+		this.cozinhaService.consultarPorId(restaurante.getCozinha().getId());
 		return this.repository.save(restaurante);
 	}
 	
@@ -33,5 +37,12 @@ public class RestauranteService {
 	public void deletarPorId(Long id) {
 		this.auxiliar.deletarPorId(this.repository.findById(id));
 		this.repository.deleteById(id);
+		
+	}
+
+	public Restaurante atualizar(Long id, Restaurante restaurante) {
+		Restaurante restauranteEntidade = this.consultarPorId(id);
+		BeanUtils.copyProperties(restaurante, restauranteEntidade, "id");
+		return restauranteEntidade;
 	}
 }

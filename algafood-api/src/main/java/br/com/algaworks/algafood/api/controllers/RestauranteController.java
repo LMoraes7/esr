@@ -3,10 +3,10 @@ package br.com.algaworks.algafood.api.controllers;
 import java.net.URI;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +18,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
 import br.com.algaworks.algafood.dominio.modelo.Restaurante;
-import br.com.algaworks.algafood.dominio.service.CozinhaService;
 import br.com.algaworks.algafood.dominio.service.RestauranteService;
 
 @RestController
@@ -27,9 +26,6 @@ public class RestauranteController {
 
 	@Autowired
 	private RestauranteService restauranteService;
-	
-	@Autowired
-	private CozinhaService cozinhaService;
 	
 	@GetMapping
 	public List<Restaurante> consultarTodosRestaurantes() {
@@ -46,9 +42,10 @@ public class RestauranteController {
 	}
 	
 	@PostMapping
+	@Transactional
 	public ResponseEntity<?> cadastrarRestaurante(@RequestBody Restaurante restaurante, UriComponentsBuilder uriBuilder) {
 		try {
-			restaurante = this.restauranteService.salvar(restaurante, this.cozinhaService);
+			restaurante = this.restauranteService.salvar(restaurante);
 			URI uri = uriBuilder.path("http://localhost:8080/restaurantes/{id}").buildAndExpand(restaurante.getId()).toUri();
 			return ResponseEntity.created(uri).body(restaurante);
 		} catch (EntidadeInexistenteException e) {
@@ -58,12 +55,22 @@ public class RestauranteController {
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public void atualizarRestaurante(@PathVariable("id") Long id, @RequestBody Restaurante restaurante) {
+	public ResponseEntity<?> atualizarRestaurante(@PathVariable("id") Long id, @RequestBody Restaurante restaurante) {
 		try {
-			Restaurante restauranteEntidade = this.restauranteService.consultarPorId(id);
-			BeanUtils.copyProperties(restaurante, restauranteEntidade, "id");
-		} catch (Exception e) {
-			// TODO: handle exception
+			restaurante = this.restauranteService.atualizar(id, restaurante);
+			return ResponseEntity.ok(restaurante);
+		} catch (EntidadeInexistenteException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deletarRestaurante(@PathVariable("id") Long id) {
+		try {
+			this.restauranteService.deletarPorId(id);
+			return ResponseEntity.noContent().build();
+		} catch (EntidadeInexistenteException e) {
+			return ResponseEntity.notFound().build();
 		}
 	}
 }
