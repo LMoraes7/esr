@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeEmUsoException;
+import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
 import br.com.algaworks.algafood.dominio.modelo.Cozinha;
 import br.com.algaworks.algafood.dominio.repository.CozinhaRepository;
 
@@ -32,22 +34,12 @@ public class CozinhaService {
 	}
 	
 	public void deletarPorId(Long id) {
-		this.auxiliar.deletarPorId(this.repository.findById(id));
 		try {
 			this.repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException("A entidade informada não pode ser excluída!");
+		} catch (EmptyResultDataAccessException e) {
+			throw new EntidadeInexistenteException("Entidade inexistente!");
 		}
-		
-//		Optional<Cozinha> cozinhaOptional = this.repository.findById(id);
-//		if(cozinhaOptional.isPresent()) {
-//			try {
-//				this.repository.deleteById(id);
-//				System.out.println("testando");
-//			} catch (DataIntegrityViolationException e) {
-//				throw new EntidadeEmUsoException("A entidade informada não pode ser excluída!");
-//			}
-//		} else
-//			throw new EntidadeInexistenteException("Entidade inexistente!");
 	}
 }

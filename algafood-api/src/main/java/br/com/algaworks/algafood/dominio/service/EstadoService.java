@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeEmUsoException;
+import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
 import br.com.algaworks.algafood.dominio.modelo.Estado;
 import br.com.algaworks.algafood.dominio.repository.EstadoRepository;
 
@@ -34,10 +36,11 @@ public class EstadoService {
 	
 	public void deletarPorId(Long id) {
 		try {
-			this.auxiliar.deletarPorId(this.repository.findById(id));
 			this.repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException("Entidade não pode ser excluída!");
+		} catch (EmptyResultDataAccessException e) {
+			throw new EntidadeInexistenteException("Entidade inexistente!");
 		}
 	}
 

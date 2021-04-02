@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
 import br.com.algaworks.algafood.dominio.modelo.Cidade;
 import br.com.algaworks.algafood.dominio.repository.CidadeRepository;
 
@@ -35,8 +37,11 @@ public class CidadeService {
 	}
 	
 	public void deletarPorId(Long id) {
-		this.auxiliar.deletarPorId(this.repository.findById(id));
-		this.repository.deleteById(id);
+		try {
+			this.repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new EntidadeInexistenteException("Entidade inexistente!");
+		}
 	}
 
 	public Cidade atualizar(Long id, Cidade cidade) {

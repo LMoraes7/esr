@@ -17,12 +17,4 @@ public class Auxiliar {
 			return modeloOptional.get();
 		throw new EntidadeInexistenteException("Entidade Inexistente!");
 	}
-	
-	public void deletarPorId(Optional<? extends Modelo> modeloOptional) {
-		if(modeloOptional.isPresent()) {
-			System.out.println("Entidade a ser deletada existe no BD");
-			return;
-		}
-		throw new EntidadeInexistenteException("Entidade inexistente!"); 
-	}
 }

@@ -2,12 +2,14 @@ package br.com.algaworks.algafood.api.controllers;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -61,6 +63,17 @@ public class RestauranteController {
 			return ResponseEntity.ok(restaurante);
 		} catch (EntidadeInexistenteException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PatchMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> atualizarParcialRestaurante(@PathVariable("id") Long id, @RequestBody Map<String , Object> campos) {
+		try {
+			Restaurante restaurante = this.restauranteService.atualizarParcial(id, campos);
+			return ResponseEntity.ok().body(restaurante);
+		} catch (EntidadeInexistenteException e) {
+			return ResponseEntity.notFound().build();
 		}
 	}
 	
