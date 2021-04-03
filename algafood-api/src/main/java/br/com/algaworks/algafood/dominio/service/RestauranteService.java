@@ -61,9 +61,9 @@ public class RestauranteService {
 //		A classe ObjectMapper é a classe responsável por converter/serializar Objetos Java em JSON e vice-versa.
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-//		Método para serializar os campos informados para um Objeto do tipo informado.
+//		Método para serializar os campos com seus valores informados no JSON para um Objeto do tipo informado.
 //		Converta o JSON informado na variável campos para um Objeto Java do tipo Restaurante.
-		Restaurante restauranteConvertido = objectMapper.convertValue(campos, Restaurante.class);
+		Restaurante restauranteConvertidoJSON = objectMapper.convertValue(campos, Restaurante.class);
 		
 		campos.forEach((nomePropriedade, valorPropriedade) -> {
 			
@@ -78,7 +78,7 @@ public class RestauranteService {
 //			Busca e retorna o valor contido em um atributo de um objeto referenciado, 
 //				o retorno será o objeto contido no atrubuto
 //			Busque o valor contido no atributo referenciado como field dentro do objeto restauranteConvertido
-			Object novoValor = ReflectionUtils.getField(field, restauranteConvertido);
+			Object novoValor = ReflectionUtils.getField(field, restauranteConvertidoJSON);
 			
 //			Altera o valor do campo informado da entidade desejada com o o novo valor.
 //			Altere o campo referenciado como field do objeto restauranteEntidade com o valor contido na valorPropriedade.

@@ -9,20 +9,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_restaurantes")
+//@Table(name = "tb_restaurantes")
 public class Restaurante implements Modelo{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "nom_restaurante", nullable = false)
+	@Column(nullable = false)
 	private String nome;
 
-	@Column(name = "taxa_frete", nullable = false)
+	@Column(nullable = false)
 	private BigDecimal taxaFrete;
 	
 	@ManyToOne

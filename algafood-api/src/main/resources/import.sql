@@ -1,7 +1,29 @@
-INSERT INTO tb_cozinhas(nom_cozinha) VALUES ('Tailandesa');
-INSERT INTO tb_cozinhas(nom_cozinha) VALUES ('Indiana');
-INSERT INTO tb_cozinhas(nom_cozinha) VALUES ('Brasileira');
+insert into cozinha (id, nome) values (1, 'Tailandesa');
+insert into cozinha (id, nome) values (2, 'Indiana');
+insert into cozinha (id, nome) values (3, 'Brasileira');
+insert into cozinha (id, nome) values (4, 'Argentina');
 
-INSERT INTO tb_restaurantes(nom_restaurante, taxa_frete, cozinha_id) VALUES ('Thai Gourmet', 10, 1);
-INSERT INTO tb_restaurantes(nom_restaurante, taxa_frete, cozinha_id) VALUES ('Thai Delivery', 9.50, 1);
-INSERT INTO tb_restaurantes(nom_restaurante, taxa_frete, cozinha_id) VALUES ('Tuk Tuk Comida Indiana', 15, 2);
+insert into restaurante (id, nome, taxa_frete, cozinha_id) values (1, 'Thai Gourmet', 10, 1);
+insert into restaurante (id, nome, taxa_frete, cozinha_id) values (2, 'Thai Delivery', 9.50, 1);
+insert into restaurante (id, nome, taxa_frete, cozinha_id) values (3, 'Tuk Tuk Comida Indiana', 15, 2);
+insert into restaurante (id, nome, taxa_frete, cozinha_id) values (4, 'Pizzaria Parmê', 16.50, 3);
+
+insert into estado (id, nome) values (1, 'Minas Gerais');
+insert into estado (id, nome) values (2, 'São Paulo');
+insert into estado (id, nome) values (3, 'Ceará');
+insert into estado (id, nome) values (4, 'Rio de Janeiro');
+
+insert into cidade (id, nome, estado_id) values (1, 'Uberlândia', 1);
+insert into cidade (id, nome, estado_id) values (2, 'Belo Horizonte', 1);
+insert into cidade (id, nome, estado_id) values (3, 'São Paulo', 2);
+insert into cidade (id, nome, estado_id) values (4, 'Campinas', 2);
+insert into cidade (id, nome, estado_id) values (5, 'Fortaleza', 3);
+insert into cidade (id, nome, estado_id) values (6, 'Rio de Janeiro', 4);
+insert into cidade (id, nome, estado_id) values (7, 'Niterói', 4);
+
+insert into forma_pagamento (id, descricao) values (1, 'Cartão de crédito');
+insert into forma_pagamento (id, descricao) values (2, 'Cartão de débito');
+insert into forma_pagamento (id, descricao) values (3, 'Dinheiro');
+
+insert into permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
+insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');

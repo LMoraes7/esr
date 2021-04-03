@@ -5,17 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_cozinhas")
+//@Table(name = "tb_cozinhas")
 public class Cozinha implements Modelo{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "nom_cozinha", length = 30, nullable = false)
+	@Column(length = 30, nullable = false)
 	private String nome;
 
 	public Cozinha() {}
