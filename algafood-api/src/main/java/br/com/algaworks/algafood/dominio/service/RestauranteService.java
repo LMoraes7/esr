@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
 import br.com.algaworks.algafood.dominio.modelo.Restaurante;
 import br.com.algaworks.algafood.dominio.repository.RestauranteRepository;
+import br.com.algaworks.algafood.infraestrutura.repository.spec.RestauranteSpecs;
 
 @Service
 public class RestauranteService {
@@ -85,5 +86,9 @@ public class RestauranteService {
 			ReflectionUtils.setField(field, restauranteEntidade, novoValor);
 		});
 		return restauranteEntidade;
+	}
+
+	public List<Restaurante> consultarPorNome(String nome) {
+		return this.repository.findAll(RestauranteSpecs.comNomeSemelhante(nome));
 	}
 }

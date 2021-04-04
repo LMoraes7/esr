@@ -4,13 +4,16 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.algaworks.algafood.dominio.modelo.Restaurante;
 
 @Repository
-public interface RestauranteRepository extends JpaRepository<Restaurante, Long>, RestauranteRepositoryQueries{
+public interface RestauranteRepository 
+		extends JpaRepository<Restaurante, Long>, JpaSpecificationExecutor<Restaurante>, 
+				RestauranteRepositoryQueries{
 	
 //	SELECT r FROM Restaurante r WHERE r.taxaFrete BETWENN :taxaInicial AND :taxaFinal
 	List<Restaurante> queryByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);

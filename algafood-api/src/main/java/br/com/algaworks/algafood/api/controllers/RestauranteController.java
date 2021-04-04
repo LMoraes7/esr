@@ -43,6 +43,11 @@ public class RestauranteController {
 		}
 	}
 	
+	@GetMapping("/nome")
+	public List<Restaurante> consultarRestaurantePorNome(String nome) {
+		return this.restauranteService.consultarPorNome(nome);
+	}
+	
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> cadastrarRestaurante(@RequestBody Restaurante restaurante, UriComponentsBuilder uriBuilder) {
