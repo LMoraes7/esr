@@ -17,6 +17,9 @@ public class Cozinha implements Modelo{
 	@Column(length = 30, nullable = false)
 	private String nome;
 
+//	@OneToMany(mappedBy = "cozinha", fetch = FetchType.LAZY)
+//	private List<Restaurante> restaurantes = new ArrayList<Restaurante>();
+	
 	public Cozinha() {}
 
 	public Cozinha(String nome) {

@@ -51,7 +51,7 @@ public class RestauranteService {
 
 	public Restaurante atualizar(Long id, Restaurante restaurante) {
 		Restaurante restauranteEntidade = this.consultarPorId(id);
-		BeanUtils.copyProperties(restaurante, restauranteEntidade, "id");
+		BeanUtils.copyProperties(restaurante, restauranteEntidade, "id", "formasPagamento", "endereco", "dataCadastro");
 		return restauranteEntidade;
 	}
 
