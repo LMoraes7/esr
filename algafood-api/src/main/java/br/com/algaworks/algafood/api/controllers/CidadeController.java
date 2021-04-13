@@ -41,6 +41,11 @@ public class CidadeController {
 		}
 	}
 	
+	@GetMapping("/buscar-nome")
+	public List<Cidade> consultarPorNome(String nome) {
+		return this.cidadeService.consultarPorNome(nome);
+	}
+	
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> cadastrarCidade(@RequestBody Cidade cidade, UriComponentsBuilder uriBuilder) {

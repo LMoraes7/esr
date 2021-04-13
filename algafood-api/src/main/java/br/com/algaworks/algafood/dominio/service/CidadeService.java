@@ -49,4 +49,8 @@ public class CidadeService {
 		BeanUtils.copyProperties(cidade, cidadeEntidade, "id");
 		return cidadeEntidade;
 	}
+
+	public List<Cidade> consultarPorNome(String nome) {
+		return this.repository.comNomeSemelhante(nome);
+	}
 }

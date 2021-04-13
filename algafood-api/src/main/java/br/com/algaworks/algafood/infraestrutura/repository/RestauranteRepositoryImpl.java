@@ -12,11 +12,15 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import br.com.algaworks.algafood.dominio.modelo.Restaurante;
-import br.com.algaworks.algafood.dominio.repository.RestauranteRepositoryQueries;
+import br.com.algaworks.algafood.dominio.repository.RestauranteRepository;
+import br.com.algaworks.algafood.dominio.repository.queries.RestauranteRepositoryQueries;
+import br.com.algaworks.algafood.infraestrutura.repository.spec.RestauranteSpecs;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
@@ -24,11 +28,18 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 	@PersistenceContext
 	private EntityManager manager;
 	
+//	A anotação @Lazy anotação informa que o Spring só irá 
+//		injetar essa dependência quando ela for utilizada de fato
+	@Autowired 
+	@Lazy
+	private RestauranteRepository restauranteRepository;
+	
 	@Override
 	public List<Restaurante> find(String nome, 
 			BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
 		
-//		A Interface CriteriaBuilder é responsável por criar as cláusulas JPQL
+//		A Interface CriteriaBuilder é responsável por criar as cláusulas JPQL -> between, equal,
+//			like, ...
 //		O EntityManager fornece uma instância de um CriteriaBuilder
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
@@ -38,7 +49,6 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 		
 // 		O método .from(Restaurante.class) cria a cláusula -> FROM Restaurante r
 		Root<Restaurante> root = criteriaQuery.from(Restaurante.class);
-		
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		
 		if(StringUtils.hasText(nome)) {
@@ -65,5 +75,55 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 //		SELECT r FROM Restaurante r WHERE r.nome LIKE %nome% AND r.taxaFrete >= taxaInicial AND r.taxaFrete <= taxaFinal
 		TypedQuery<Restaurante> query = manager.createQuery(criteriaQuery);
 		return query.getResultList();
+	}
+
+	@Override
+	public List<Restaurante> comFreteGratis() {
+//		Consulta em JPQL
+//		String jpql = "SELECT r FROM Restaurante r WHERE r.taxaFrete = 0";
+//		return manager.createQuery(jpql, Restaurante.class).getResultList();
+
+//		Usando CriteriaAPI
+//		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+//		CriteriaQuery<Restaurante> criteriaQuery = criteriaBuilder.createQuery(Restaurante.class);
+		
+//		FROM Restaurante r
+//		Root<Restaurante> root = criteriaQuery.from(Restaurante.class);
+		
+//		r.taxaFrete = 0
+//		Predicate predicate = criteriaBuilder.equal(root.get("taxaFrete"), BigDecimal.ZERO);
+		
+//		WHERE r.taxaFrete = 0
+//		criteriaQuery.where(predicate);
+		
+//		SELECT r FROM Restaurante r WHERE r.taxaFrete = 0
+//		return manager.createQuery(criteriaQuery).getResultList();
+		
+		return this.restauranteRepository.findAll(RestauranteSpecs.comFreteGratis());
+	}
+
+	@Override
+	public List<Restaurante> comNomeSemelhante(String nome) {
+//		Consulta em JPQL
+//		String jpql = "SELECT r FROM Restaurante r WHERE r.nome LIKE :nome";
+//		return manager.createQuery(jpql, Restaurante.class).setParameter("nome", "%"+nome+"%").getResultList();
+		
+//		Usando CriteriaAPI
+//		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+//		CriteriaQuery<Restaurante> criteriaQuery = criteriaBuilder.createQuery(Restaurante.class);
+		
+//		FROM Restaurante r
+//		Root<Restaurante> root = criteriaQuery.from(Restaurante.class);
+		
+//		r.nome LIKE %nome%
+//		Predicate predicate = criteriaBuilder.like(root.get("nome"), "%"+nome+"%");
+		
+//		WHERE r.nome LIKE %nome%
+//		criteriaQuery.where(predicate);
+		
+//		SELECT r FROM Restaurante r WHERE r.nome LIKE %nome%
+//		return manager.createQuery(criteriaQuery).getResultList();
+		
+		return this.restauranteRepository.findAll(RestauranteSpecs.comNomeSemelhante(nome));
 	}
 }

@@ -44,6 +44,11 @@ public class CozinhaController {
 		}
 	}
 	
+	@GetMapping("/buscar-nome")
+	public List<Cozinha> consultarCozinhaPorNome(String nome) {
+		return this.cozinhaService.consultarPorNome(nome);
+	}
+	
 	@PostMapping
 	@Transactional
 	public ResponseEntity<Cozinha> cadastarCozinha(@RequestBody Cozinha cozinha, UriComponentsBuilder uriBuilder) {

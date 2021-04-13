@@ -42,4 +42,8 @@ public class CozinhaService {
 			throw new EntidadeInexistenteException("Entidade inexistente!");
 		}
 	}
+
+	public List<Cozinha> consultarPorNome(String nome) {
+		return this.repository.comNomeSemelhante(nome);
+	}
 }

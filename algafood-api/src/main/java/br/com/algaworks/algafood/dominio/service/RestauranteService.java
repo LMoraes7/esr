@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
 import br.com.algaworks.algafood.dominio.modelo.Restaurante;
 import br.com.algaworks.algafood.dominio.repository.RestauranteRepository;
-import br.com.algaworks.algafood.infraestrutura.repository.spec.RestauranteSpecs;
 
 @Service
 public class RestauranteService {
@@ -66,11 +65,11 @@ public class RestauranteService {
 //		Converta o JSON informado na variável campos para um Objeto Java do tipo Restaurante.
 		Restaurante restauranteConvertidoJSON = objectMapper.convertValue(campos, Restaurante.class);
 		
-		campos.forEach((nomePropriedade, valorPropriedade) -> {
+		campos.forEach((nomeAtributo, valorAtributo) -> {
 			
 //			Busca e retorna o campo de uma classe cujo o parâmetro informado seja igual ao nome do atributo da classe informada.
 //			Busque o campo de uma classe Restaurante cujo o nome do seu atributo seja igual ao valor do nomePropriedade.
-			Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+			Field field = ReflectionUtils.findField(Restaurante.class, nomeAtributo);
 			
 //			Torna o atributo acessível. Um atributo private não pode ser acessado fora da classe, 
 //				porém com a alteração da visibilidade, ele se torna acessível fora da classe.
@@ -89,6 +88,10 @@ public class RestauranteService {
 	}
 
 	public List<Restaurante> consultarPorNome(String nome) {
-		return this.repository.findAll(RestauranteSpecs.comNomeSemelhante(nome));
+		return this.repository.comNomeSemelhante(nome);
+	}
+
+	public List<Restaurante> consultarComFreteGratis() {
+		return this.repository.comFreteGratis();
 	}
 }

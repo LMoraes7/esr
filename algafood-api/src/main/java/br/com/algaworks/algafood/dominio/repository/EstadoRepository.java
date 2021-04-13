@@ -11,6 +11,6 @@ import br.com.algaworks.algafood.dominio.modelo.Estado;
 public interface EstadoRepository extends JpaRepository<Estado, Long>{
 
 	
-//	SELECT e FROM Estado e WHERE e.nome LIKE %:nome%
+//	SELECT e FROM Estado e WHERE e.nome LIKE %nome%
 	List<Estado> findByNomeContaining(String nome);
 }

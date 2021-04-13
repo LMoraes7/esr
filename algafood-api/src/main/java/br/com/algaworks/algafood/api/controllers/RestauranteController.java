@@ -43,9 +43,14 @@ public class RestauranteController {
 		}
 	}
 	
-	@GetMapping("/nome")
+	@GetMapping("/buscar-nome")
 	public List<Restaurante> consultarRestaurantePorNome(String nome) {
 		return this.restauranteService.consultarPorNome(nome);
+	}
+	
+	@GetMapping("/buscar-frete-gratis")
+	public List<Restaurante> consultarRestauranteFreteGratis() {
+		return this.restauranteService.consultarComFreteGratis();
 	}
 	
 	@PostMapping
