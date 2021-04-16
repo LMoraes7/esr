@@ -14,7 +14,7 @@ public class Cozinha implements Modelo{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 30, nullable = false)
+	@Column(length = 60, nullable = false)
 	private String nome;
 
 //	@OneToMany(mappedBy = "cozinha", fetch = FetchType.LAZY)

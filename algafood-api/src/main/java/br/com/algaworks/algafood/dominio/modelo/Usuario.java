@@ -2,11 +2,11 @@ package br.com.algaworks.algafood.dominio.modelo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,23 +17,26 @@ import javax.persistence.ManyToMany;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-public class Usuario {
+public class Usuario implements Modelo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
-	private String email;
-	private String senha;
-	
-	@CreationTimestamp
 	@Column(nullable = false)
+	private String nome;
+	@Column(nullable = false)
+	private String email;
+	@Column(nullable = false)
+	private String senha;
+
+	@CreationTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataCadastro;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "usuarios_grupos", 
-		joinColumns = @JoinColumn(name = "usuario_id"),
-		inverseJoinColumns = @JoinColumn(name = "grupo_id"))
+
+	@ManyToMany
+	@JoinTable(name = "usuario_grupo", 
+	joinColumns = @JoinColumn(name = "usuario_id"), 
+	inverseJoinColumns = @JoinColumn(name = "grupo_id"))
 	private List<Grupo> grupos = new ArrayList<Grupo>();
 
 	public Long getId() {
@@ -75,12 +78,37 @@ public class Usuario {
 	public void setDataCadastro(LocalDateTime dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
-	
+
 	public List<Grupo> getGrupos() {
-		return grupos;
+		return Collections.unmodifiableList(grupos);
 	}
-	
+
 	public void setGrupos(List<Grupo> grupos) {
 		this.grupos = grupos;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

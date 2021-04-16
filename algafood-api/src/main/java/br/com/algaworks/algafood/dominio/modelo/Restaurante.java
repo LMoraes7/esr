@@ -3,6 +3,7 @@ package br.com.algaworks.algafood.dominio.modelo;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -37,10 +38,11 @@ public class Restaurante implements Modelo{
 	@Column(nullable = false)
 	private BigDecimal taxaFrete;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<Produto>();
 	
@@ -48,7 +50,6 @@ public class Restaurante implements Modelo{
 	@Embedded
 	@JsonIgnore
 	private Endereco endereco;
-	
 	
 	@JsonIgnore
 //	Anotação do próprio HIBERNATE que serve para instanciar um objeto do tipo data 
@@ -65,7 +66,7 @@ public class Restaurante implements Modelo{
 	private LocalDateTime dataAtualizacao;
 	
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
 	@JoinTable(name = "restaurante_forma_pagamento", 
 		joinColumns = @JoinColumn(name = "restaurante_id"), 
 		inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
@@ -121,7 +122,7 @@ public class Restaurante implements Modelo{
 	}
 	
 	public List<FormaPagamento> getFormasPagamento() {
-		return formasPagamento;
+		return Collections.unmodifiableList(formasPagamento);
 	}
 	
 	public void setFormasPagamento(List<FormaPagamento> formasPagamento) {
@@ -145,7 +146,7 @@ public class Restaurante implements Modelo{
 	}
 	
 	public List<Produto> getProdutos() {
-		return produtos;
+		return Collections.unmodifiableList(produtos);
 	}
 	
 	public void setProdutos(List<Produto> produtos) {
