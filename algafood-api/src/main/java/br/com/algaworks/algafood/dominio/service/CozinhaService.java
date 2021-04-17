@@ -19,7 +19,7 @@ public class CozinhaService {
 	private CozinhaRepository repository;
 	
 	@Autowired
-	private Auxiliar auxiliar;
+	private ConsultarOuFalhar auxiliar;
 	
 	public Cozinha salvar(Cozinha cozinha) {
 		return this.repository.save(cozinha);
@@ -31,6 +31,10 @@ public class CozinhaService {
 	
 	public Cozinha consultarPorId(Long id) {
 		return (Cozinha) auxiliar.consultarPorId(this.repository.findById(id));
+	}
+	
+	public Cozinha consultarPorIdParaValidarRequisicao(Long id) {
+		return (Cozinha) auxiliar.consultarPorIdParaValidarRequisicao(this.repository.findById(id));
 	}
 	
 	public void deletarPorId(Long id) {

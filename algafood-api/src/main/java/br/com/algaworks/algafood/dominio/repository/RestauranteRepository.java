@@ -2,8 +2,10 @@ package br.com.algaworks.algafood.dominio.repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +28,9 @@ public interface RestauranteRepository
 	
 //	Está no arquivo orm.xml
 	List<Restaurante> consultarPorNome(@Param("nome") String nome);
+	
+	@Query("SELECT r FROM Restaurante r JOIN r.cozinha JOIN FETCH r.produtos WHERE r.id = :id")
+	Optional<Restaurante> consultarPorId(@Param("id") Long id);
 	
 	boolean existsByNome(String nome);
 }

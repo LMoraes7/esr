@@ -26,10 +26,10 @@ public class RestauranteService {
 	private CozinhaService cozinhaService;
 	
 	@Autowired
-	private Auxiliar auxiliar;
+	private ConsultarOuFalhar auxiliar;
 	
 	public Restaurante salvar(Restaurante restaurante) {
-		this.cozinhaService.consultarPorId(restaurante.getCozinha().getId());
+		this.cozinhaService.consultarPorIdParaValidarRequisicao(restaurante.getCozinha().getId());
 		return this.repository.save(restaurante);
 	}
 	

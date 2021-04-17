@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
 import br.com.algaworks.algafood.dominio.modelo.Restaurante;
 import br.com.algaworks.algafood.dominio.service.RestauranteService;
 
@@ -36,11 +35,7 @@ public class RestauranteController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Restaurante> consultarRestaurantePorId(@PathVariable("id") Long id) {
-		try {
-			return ResponseEntity.ok(this.restauranteService.consultarPorId(id));
-		} catch (EntidadeInexistenteException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(this.restauranteService.consultarPorId(id));
 	}
 	
 	@GetMapping("/buscar-nome")
@@ -56,44 +51,28 @@ public class RestauranteController {
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> cadastrarRestaurante(@RequestBody Restaurante restaurante, UriComponentsBuilder uriBuilder) {
-		try {
-			restaurante = this.restauranteService.salvar(restaurante);
-			URI uri = uriBuilder.path("http://localhost:8080/restaurantes/{id}").buildAndExpand(restaurante.getId()).toUri();
-			return ResponseEntity.created(uri).body(restaurante);
-		} catch (EntidadeInexistenteException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		restaurante = this.restauranteService.salvar(restaurante);
+		URI uri = uriBuilder.path("http://localhost:8080/restaurantes/{id}").buildAndExpand(restaurante.getId()).toUri();
+		return ResponseEntity.created(uri).body(restaurante);
 	}
 	
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> atualizarRestaurante(@PathVariable("id") Long id, @RequestBody Restaurante restaurante) {
-		try {
-			restaurante = this.restauranteService.atualizar(id, restaurante);
-			return ResponseEntity.ok(restaurante);
-		} catch (EntidadeInexistenteException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		restaurante = this.restauranteService.atualizar(id, restaurante);
+		return ResponseEntity.ok(restaurante);
 	}
 	
 	@PatchMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> atualizarParcialRestaurante(@PathVariable("id") Long id, @RequestBody Map<String , Object> campos) {
-		try {
-			Restaurante restaurante = this.restauranteService.atualizarParcial(id, campos);
-			return ResponseEntity.ok().body(restaurante);
-		} catch (EntidadeInexistenteException e) {
-			return ResponseEntity.notFound().build();
-		}
+		Restaurante restaurante = this.restauranteService.atualizarParcial(id, campos);
+		return ResponseEntity.ok().body(restaurante);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deletarRestaurante(@PathVariable("id") Long id) {
-		try {
-			this.restauranteService.deletarPorId(id);
-			return ResponseEntity.noContent().build();
-		} catch (EntidadeInexistenteException e) {
-			return ResponseEntity.notFound().build();
-		}
+		this.restauranteService.deletarPorId(id);
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.algaworks.algafood.dominio.exceptions.EntidadeEmUsoException;
-import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
 import br.com.algaworks.algafood.dominio.modelo.Estado;
 import br.com.algaworks.algafood.dominio.service.EstadoService;
 
@@ -36,11 +33,7 @@ public class EstadoController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Estado> consultarPorId(@PathVariable("id") Long id) {
-		try {
-			return ResponseEntity.ok(this.estadoService.consultarPorId(id));
-		} catch (EntidadeInexistenteException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(this.estadoService.consultarPorId(id));
 	}
 	
 	@PostMapping
@@ -54,23 +47,13 @@ public class EstadoController {
 	@PutMapping
 	@Transactional
 	public ResponseEntity<?> atualizarEstado(@PathVariable("id") Long id, @RequestBody Estado estado) {
-		try {
-			estado = this.estadoService.atualizar(id, estado);
-			return ResponseEntity.ok(estado);
-		} catch (EntidadeInexistenteException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		estado = this.estadoService.atualizar(id, estado);
+		return ResponseEntity.ok(estado);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deletarEstado(@PathVariable("id") Long id) {
-		try {
-			this.estadoService.deletarPorId(id);
-			return ResponseEntity.noContent().build();
-		} catch (EntidadeInexistenteException e) {
-			return ResponseEntity.notFound().build();
-		} catch (EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-		}
+		this.estadoService.deletarPorId(id);
+		return ResponseEntity.noContent().build();
 	}
 }

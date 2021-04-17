@@ -19,6 +19,6 @@ public interface CidadeRepository extends
 //	SELECT c FROM Cidade c JOIN FETCH c.estado e WHERE e.id = :id
 	List<Cidade> queryByEstado_Id(Long id);
 	
-	@Query("SELECT c FROM Cidade c JOIN c.estado WHERE c.id = :id")
-	Optional<Cidade> consultarPorId(@Param(value = "id") Long id);
+	@Query("SELECT c FROM Cidade c JOIN FETCH c.estado WHERE c.id = :id")
+	Optional<Cidade> consultarPorId(@Param("id") Long id);
 }

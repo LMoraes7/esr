@@ -18,13 +18,13 @@ public class CidadeService {
 	private CidadeRepository repository;
 	
 	@Autowired
-	private Auxiliar auxiliar;
+	private ConsultarOuFalhar auxiliar;
 	
 	@Autowired
 	private EstadoService estadoService;
 	
 	public Cidade salvar(Cidade cidade) {
-		this.estadoService.consultarPorId(cidade.getEstado().getId());
+		this.estadoService.consultarPorIdParaValidarRequisicao(cidade.getEstado().getId());
 		return this.repository.save(cidade);
 	}
 	
@@ -33,7 +33,7 @@ public class CidadeService {
 	}
 	
 	public Cidade consultarPorId(Long id) {
-		return (Cidade) this.auxiliar.consultarPorId(this.repository.findById(id));
+		return (Cidade) this.auxiliar.consultarPorId(this.repository.consultarPorId(id));
 	}
 	
 	public void deletarPorId(Long id) {
@@ -45,6 +45,7 @@ public class CidadeService {
 	}
 
 	public Cidade atualizar(Long id, Cidade cidade) {
+		this.estadoService.consultarPorIdParaValidarRequisicao(cidade.getEstado().getId());
 		Cidade cidadeEntidade = this.consultarPorId(id);
 		BeanUtils.copyProperties(cidade, cidadeEntidade, "id");
 		return cidadeEntidade;

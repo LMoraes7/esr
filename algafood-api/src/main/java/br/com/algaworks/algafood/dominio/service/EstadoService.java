@@ -20,7 +20,7 @@ public class EstadoService {
 	private EstadoRepository repository;
 	
 	@Autowired
-	private Auxiliar auxiliar;
+	private ConsultarOuFalhar auxiliar;
 	
 	public Estado salvar(Estado estado) {
 		return this.repository.save(estado);
@@ -32,6 +32,10 @@ public class EstadoService {
 	
 	public Estado consultarPorId(Long id) {
 		return (Estado) this.auxiliar.consultarPorId(this.repository.findById(id));
+	}
+	
+	public Estado consultarPorIdParaValidarRequisicao(Long id) {
+		return (Estado) this.auxiliar.consultarPorIdParaValidarRequisicao(this.repository.findById(id));
 	}
 	
 	public void deletarPorId(Long id) {
