@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
 import br.com.algaworks.algafood.dominio.modelo.Cidade;
@@ -23,6 +24,7 @@ public class CidadeService {
 	@Autowired
 	private EstadoService estadoService;
 	
+	@Transactional
 	public Cidade salvar(Cidade cidade) {
 		this.estadoService.consultarPorIdParaValidarRequisicao(cidade.getEstado().getId());
 		return this.repository.save(cidade);
@@ -36,6 +38,7 @@ public class CidadeService {
 		return (Cidade) this.auxiliar.consultarPorId(this.repository.consultarPorId(id));
 	}
 	
+	@Transactional
 	public void deletarPorId(Long id) {
 		try {
 			this.repository.deleteById(id);
@@ -44,6 +47,7 @@ public class CidadeService {
 		}
 	}
 
+	@Transactional
 	public Cidade atualizar(Long id, Cidade cidade) {
 		this.estadoService.consultarPorIdParaValidarRequisicao(cidade.getEstado().getId());
 		Cidade cidadeEntidade = this.consultarPorId(id);

@@ -3,6 +3,8 @@ package br.com.algaworks.algafood.api.controllers;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +45,7 @@ public class CidadeController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> cadastrarCidade(@RequestBody Cidade cidade, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> cadastrarCidade(@RequestBody @Valid Cidade cidade, UriComponentsBuilder uriBuilder) {
 		cidade = this.cidadeService.salvar(cidade);
 		URI uri = uriBuilder.path("http://localhost:8080/cidades/{id}").buildAndExpand(cidade.getId()).toUri();
 		return ResponseEntity.created(uri).body(cidade);
@@ -51,7 +53,7 @@ public class CidadeController {
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> atualizarCidade(@PathVariable("id") Long id, @RequestBody Cidade cidade) {
+	public ResponseEntity<?> atualizarCidade(@PathVariable("id") Long id, @RequestBody @Valid Cidade cidade) {
 		cidade = this.cidadeService.atualizar(id, cidade);
 		return ResponseEntity.ok(cidade);
 	}

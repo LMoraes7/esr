@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +52,7 @@ public class RestauranteController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<?> cadastrarRestaurante(@RequestBody Restaurante restaurante, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<?> cadastrarRestaurante(@RequestBody @Valid Restaurante restaurante, UriComponentsBuilder uriBuilder) {
 		restaurante = this.restauranteService.salvar(restaurante);
 		URI uri = uriBuilder.path("http://localhost:8080/restaurantes/{id}").buildAndExpand(restaurante.getId()).toUri();
 		return ResponseEntity.created(uri).body(restaurante);
@@ -58,7 +60,7 @@ public class RestauranteController {
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> atualizarRestaurante(@PathVariable("id") Long id, @RequestBody Restaurante restaurante) {
+	public ResponseEntity<?> atualizarRestaurante(@PathVariable("id") Long id, @RequestBody @Valid Restaurante restaurante) {
 		restaurante = this.restauranteService.atualizar(id, restaurante);
 		return ResponseEntity.ok(restaurante);
 	}

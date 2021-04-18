@@ -18,11 +18,21 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import br.com.algaworks.algafood.Groups;
+import br.com.algaworks.algafood.TaxaFrete;
 
 @Entity
 //@Table(name = "tb_restaurantes")
@@ -32,12 +42,23 @@ public class Restaurante implements Modelo{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank
+	@Size(min = 3, message = "O nome não pode possuir menos de 3 caracteres.")
 	@Column(nullable = false)
 	private String nome;
 
+//	Indica o valor mínimo a ser aceito
+//	@DecimalMin(value = "0")
+//	Indica que o valor deve ser positivo ou zero
+//	@PositiveOrZero
+	@TaxaFrete
 	@Column(nullable = false)
 	private BigDecimal taxaFrete;
 	
+	@JsonIgnoreProperties(value = "nome", allowGetters = true)
+	@Valid
+	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;

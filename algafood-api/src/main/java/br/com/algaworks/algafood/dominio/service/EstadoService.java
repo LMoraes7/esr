@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeEmUsoException;
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
@@ -22,6 +23,7 @@ public class EstadoService {
 	@Autowired
 	private ConsultarOuFalhar auxiliar;
 	
+	@Transactional
 	public Estado salvar(Estado estado) {
 		return this.repository.save(estado);
 	}
@@ -38,6 +40,7 @@ public class EstadoService {
 		return (Estado) this.auxiliar.consultarPorIdParaValidarRequisicao(this.repository.findById(id));
 	}
 	
+	@Transactional
 	public void deletarPorId(Long id) {
 		try {
 			this.repository.deleteById(id);
@@ -48,6 +51,7 @@ public class EstadoService {
 		}
 	}
 
+	@Transactional
 	public Estado atualizar(Long id, Estado estado) {
 		Estado estadoEntidade = this.consultarPorId(id);
 		BeanUtils.copyProperties(estado, estadoEntidade, "id");

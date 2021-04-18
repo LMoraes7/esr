@@ -3,6 +3,8 @@ package br.com.algaworks.algafood.api.controllers;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +40,7 @@ public class EstadoController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<Estado> cadastrarEstado(@RequestBody Estado estado, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<Estado> cadastrarEstado(@RequestBody @Valid Estado estado, UriComponentsBuilder uriBuilder) {
 		estado = this.estadoService.salvar(estado);
 		URI uri = uriBuilder.path("http://localhost:8080/estados/{id}").buildAndExpand(estado.getId()).toUri();
 		return ResponseEntity.created(uri).body(estado);
@@ -46,7 +48,7 @@ public class EstadoController {
 	
 	@PutMapping
 	@Transactional
-	public ResponseEntity<?> atualizarEstado(@PathVariable("id") Long id, @RequestBody Estado estado) {
+	public ResponseEntity<?> atualizarEstado(@PathVariable("id") Long id, @RequestBody @Valid Estado estado) {
 		estado = this.estadoService.atualizar(id, estado);
 		return ResponseEntity.ok(estado);
 	}

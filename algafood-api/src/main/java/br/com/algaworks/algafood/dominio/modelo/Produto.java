@@ -30,6 +30,8 @@ public class Produto implements Modelo{
 	@JoinColumn(name = "restaurante_id", nullable = false)
 	private Restaurante restaurante;
 
+//	SELECT p FROM Produto p JOIN p.restaurantes r JOIN FETCH r.formasPagamento WHERE p.id = :id
+	
 	public Long getId() {
 		return id;
 	}

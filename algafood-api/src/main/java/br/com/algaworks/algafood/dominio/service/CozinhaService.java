@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeEmUsoException;
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
@@ -21,6 +22,7 @@ public class CozinhaService {
 	@Autowired
 	private ConsultarOuFalhar auxiliar;
 	
+	@Transactional
 	public Cozinha salvar(Cozinha cozinha) {
 		return this.repository.save(cozinha);
 	}
@@ -37,6 +39,7 @@ public class CozinhaService {
 		return (Cozinha) auxiliar.consultarPorIdParaValidarRequisicao(this.repository.findById(id));
 	}
 	
+	@Transactional
 	public void deletarPorId(Long id) {
 		try {
 			this.repository.deleteById(id);

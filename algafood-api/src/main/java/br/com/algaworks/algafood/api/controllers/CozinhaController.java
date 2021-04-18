@@ -3,6 +3,8 @@ package br.com.algaworks.algafood.api.controllers;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +46,7 @@ public class CozinhaController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<Cozinha> cadastarCozinha(@RequestBody Cozinha cozinha, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<Cozinha> cadastarCozinha(@RequestBody @Valid Cozinha cozinha, UriComponentsBuilder uriBuilder) {
 		cozinha = this.cozinhaService.salvar(cozinha);
 		URI uri = uriBuilder.path("http://localhost:8080/cozinhas/{id}").buildAndExpand(cozinha.getId()).toUri();
 		return ResponseEntity.created(uri).body(cozinha);
@@ -52,7 +54,7 @@ public class CozinhaController {
 	
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<Cozinha> atualizarCozinha(@PathVariable("id") Long id, @RequestBody Cozinha cozinha) {
+	public ResponseEntity<Cozinha> atualizarCozinha(@PathVariable("id") Long id, @RequestBody @Valid Cozinha cozinha) {
 		Cozinha cozinhaEntidade = this.cozinhaService.consultarPorId(id);
 		BeanUtils.copyProperties(cozinha, cozinhaEntidade, "id");
 		return ResponseEntity.ok(cozinhaEntidade);

@@ -8,11 +8,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.algaworks.algafood.dominio.exceptions.EntidadeInexistenteException;
+import br.com.algaworks.algafood.dominio.modelo.Cozinha;
 import br.com.algaworks.algafood.dominio.modelo.Restaurante;
 import br.com.algaworks.algafood.dominio.repository.RestauranteRepository;
 
@@ -28,8 +30,10 @@ public class RestauranteService {
 	@Autowired
 	private ConsultarOuFalhar auxiliar;
 	
+	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
-		this.cozinhaService.consultarPorIdParaValidarRequisicao(restaurante.getCozinha().getId());
+		Cozinha cozinha = this.cozinhaService.consultarPorIdParaValidarRequisicao(restaurante.getCozinha().getId());
+		restaurante.setCozinha(cozinha);
 		return this.repository.save(restaurante);
 	}
 	
@@ -41,6 +45,7 @@ public class RestauranteService {
 		return (Restaurante) this.auxiliar.consultarPorId(this.repository.findById(id));
 	}
 	
+	@Transactional
 	public void deletarPorId(Long id) {
 		try {
 			this.repository.deleteById(id);
@@ -48,13 +53,15 @@ public class RestauranteService {
 			throw new EntidadeInexistenteException("Entidade inexistente!");
 		}
 	}
-
+	
+	@Transactional
 	public Restaurante atualizar(Long id, Restaurante restaurante) {
 		Restaurante restauranteEntidade = this.consultarPorId(id);
 		BeanUtils.copyProperties(restaurante, restauranteEntidade, "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 		return restauranteEntidade;
 	}
 
+	@Transactional
 	public Restaurante atualizarParcial(Long id, Map<String, Object> campos) {
 		Restaurante restauranteEntidade = this.consultarPorId(id);
 		
