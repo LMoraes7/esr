@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Produto implements Modelo{
+public class Produto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,59 +24,21 @@ public class Produto implements Modelo{
 	@Column(nullable = false)
 	private BigDecimal preco;
 	@Column(nullable = false)
-	private Boolean ativo;
-
+	private boolean ativo;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "restaurante_id", nullable = false)
+	@JoinColumn(nullable = false)
 	private Restaurante restaurante;
 
-//	SELECT p FROM Produto p JOIN p.restaurantes r JOIN FETCH r.formasPagamento WHERE p.id = :id
-	
-	public Long getId() {
-		return id;
+	@Deprecated
+	public Produto() {
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
+	public Produto(String nome, String descricao, BigDecimal preco, boolean ativo, Restaurante restaurante) {
 		this.nome = nome;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public BigDecimal getPreco() {
-		return preco;
-	}
-
-	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
-	}
-
-	public Boolean getAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
-	}
-
-	public Restaurante getRestaurante() {
-		return restaurante;
-	}
-
-	public void setRestaurante(Restaurante restaurante) {
 		this.restaurante = restaurante;
 	}
 

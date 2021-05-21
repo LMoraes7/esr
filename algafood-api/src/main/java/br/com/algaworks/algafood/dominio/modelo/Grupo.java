@@ -1,10 +1,8 @@
 package br.com.algaworks.algafood.dominio.modelo;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,43 +13,23 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Grupo implements Modelo{
+public class Grupo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(nullable = false)
 	private String nome;
-
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "grupo_permissao", 
-	joinColumns = @JoinColumn(name = "grupo_id"), 
-	inverseJoinColumns = @JoinColumn(name = "permissao_id"))
+	@JoinTable(name = "grupo_permissao", joinColumns = @JoinColumn(name = "grupo_id"),
+    	inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> permissoes = new ArrayList<Permissao>();
 
-	public Long getId() {
-		return id;
+	@Deprecated
+	public Grupo() {
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
+	public Grupo(String nome) {
 		this.nome = nome;
-	}
-
-	public List<Permissao> getPermissoes() {
-		return Collections.unmodifiableList(permissoes);
-	}
-
-	public void setPermissoes(List<Permissao> permissoes) {
-		this.permissoes = permissoes;
 	}
 
 	@Override

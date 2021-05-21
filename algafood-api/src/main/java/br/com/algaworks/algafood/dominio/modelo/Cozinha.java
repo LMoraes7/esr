@@ -1,69 +1,37 @@
 package br.com.algaworks.algafood.dominio.modelo;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.IndexColumn;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.algaworks.algafood.Groups;
-
 @Entity
-//@Table(name = "tb_cozinhas")
-public class Cozinha implements Modelo{
+public class Cozinha {
 
-	@NotNull(groups = Groups.CozinhaId.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@NotBlank
-	@Column(length = 60, nullable = false)
 	private String nome;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "cozinha", fetch = FetchType.LAZY)
-	private List<Restaurante> restaurantes = new ArrayList<Restaurante>();
 	
-	public Cozinha() {}
+	@Deprecated
+	public Cozinha() {
+	}
 
 	public Cozinha(String nome) {
 		this.nome = nome;
 	}
-
-	@Override
+	
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
-	public List<Restaurante> getRestaurantes() {
-		return Collections.unmodifiableList(restaurantes);
-	}
-	
-	public void setRestaurantes(List<Restaurante> restaurantes) {
-		this.restaurantes = restaurantes;
 	}
 
 	@Override

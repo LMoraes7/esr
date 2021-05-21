@@ -2,11 +2,10 @@ package br.com.algaworks.algafood.dominio.modelo;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-//Anotação para indicar que essa classe não é uma entidade, 
-//	e sim uma classe que será incorporada em uma entidade. Ela será uma parte de uma entidade
 @Embeddable
 public class Endereco {
 
@@ -20,56 +19,23 @@ public class Endereco {
 	private String complemento;
 	@Column(name = "endereco_bairro")
 	private String bairro;
-
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "endereco_cidade_id")
 	private Cidade cidade;
 
-	public String getCep() {
-		return cep;
+	@Deprecated
+	public Endereco() {
 	}
 
-	public void setCep(String cep) {
+	public Endereco(String cep, String logradouro, String numero, String bairro, Cidade cidade) {
 		this.cep = cep;
-	}
-
-	public String getLogradouro() {
-		return logradouro;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.bairro = bairro;
+		this.cidade = cidade;
 	}
 
 	public void setLogradouro(String logradouro) {
 		this.logradouro = logradouro;
-	}
-
-	public String getNumero() {
-		return numero;
-	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
-
-	public String getComplemento() {
-		return complemento;
-	}
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
-	public String getBairro() {
-		return bairro;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public Cidade getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(Cidade cidade) {
-		this.cidade = cidade;
 	}
 }

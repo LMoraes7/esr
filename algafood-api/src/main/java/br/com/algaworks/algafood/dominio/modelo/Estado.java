@@ -5,44 +5,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import br.com.algaworks.algafood.Groups;
 
 @Entity
-public class Estado implements Modelo{
+public class Estado {
 
-	@NotNull(groups = Groups.EstadoId.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@NotBlank//(message = "Nome é obrigatório")
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String nome;
 
-	public Estado() {}
-	
+	@Deprecated
+	public Estado() {
+	}
+
 	public Estado(String nome) {
 		this.nome = nome;
 	}
-
-	@Override
+	
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	@Override
